@@ -34,11 +34,3 @@ class Solution:
             path.append(letter)
             self.dfs(digits, res, path, idx+1)
             path.pop()
-
-
-if __name__ == '__main__':
-    input = "22"
-    expected = ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
-    s = Solution()
-    output = s.letterCombinations(input)
-    print(output)
