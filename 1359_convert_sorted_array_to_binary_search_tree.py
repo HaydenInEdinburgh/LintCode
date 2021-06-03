@@ -31,6 +31,3 @@ class Solution:
         node.right = self.helper(numbers, (start + end) // 2 + 1, end)
 
         return node
-
-
-
