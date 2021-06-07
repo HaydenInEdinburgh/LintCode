@@ -50,7 +50,7 @@ class LRUCache:
             self.pop_front()
 
     def kick(self, prev):  # move a node to the tail
-        node = prev.next
+        node = prev.next 
         if node == self.tail:  # has been tail
             return
         prev.next = node.next  #
