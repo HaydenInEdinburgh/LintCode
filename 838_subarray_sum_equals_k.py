@@ -9,12 +9,14 @@ class Solution:
         if not nums:
             return 0
         cnt, prefix = 0, 0
-        pre_cnt = {}
+        pre_cnt = {0: 1}
         for n in nums:
             prefix += n
+            if prefix - k in pre_cnt:
+                cnt += pre_cnt[prefix -k]
+            pre_cnt[prefix] = pre_cnt.get(prefix, 0) + 1
 
-
-
+        return cnt
 if __name__ == '__main__':
     s = Solution()
     nums = [2,1,-1,1,2]
