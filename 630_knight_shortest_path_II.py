@@ -1,6 +1,11 @@
 import sys
 from collections import deque
-DIRECTIONS = [(1,2), (-1,2), (2,1), (-2,1)]
+DIRECTIONS = [
+    (-1, -2),
+    (1, -2),
+    (-2, -1),
+    (2, -1),
+]
 class Solution_BFS:
     """
     @param grid: a chessboard included 0 and 1
@@ -49,16 +54,26 @@ class Solution_DP:
         if not m or not n:
             return 0
 
-        dp = [[0] * m for _ in range(n)]
+        dp = [[sys.maxsize] * 3 for _ in range(n)]
 
         #init
-        dp[0][0] = 1
-        for j in range(1, m):
+        dp[0][0] = 0
+
+        #FUNCTION
+        for j in range(m):
             for i in range(n):
-                dp[i][j] = sys.maxsize
                 if grid[i][j]:
                     continue # barrier
                 for dx, dy in DIRECTIONS:
-                    nx, ny = i+dx, j+dy
-                    if 0<= nx< m and 0<= ny< n:
-                        dp[nx][ny] = (dp[nx][], dp[i][j] +1
+                    nx, ny = i+dx, j+dy #nx ,ny are actually pre step
+                    if 0<= nx< n and 0<= ny< m:
+                        dp[i][j %3] = min(dp[i][j%3], dp[nx][ny%3] +1)
+        print(dp)
+        if dp[n-1][(m-1)%3] == sys.maxsize:
+            return -1
+        return dp[n-1][(m-1)%3]
+
+if __name__ == '__main__':
+    s = Solution_DP()
+    input = [[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    print(s.shortestPath2(input))
