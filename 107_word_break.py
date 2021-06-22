@@ -1,10 +1,11 @@
 class Solution_MEMO:
     # Memo Search hits memory limit -> not work
     """
-    @param s: A string
-    @param wordSet: A dictionary of words dict
-    @return: A boolean
-    """
+	@param s: A string
+	@param wordSet: A dictionary of words dict
+	@return: A boolean
+	"""
+
     def wordBreak(self, s, wordSet):
         # write your code here
         if not s:
@@ -18,7 +19,7 @@ class Solution_MEMO:
 
         if len(s) == 0:
             return True
-        for i in range(1, min(len(s), max_length) +1):
+        for i in range(1, min(len(s), max_length) + 1):
             if s[:i] not in wordSet:
                 continue
             canBreak = self.dfs(s[i:], max_length, wordSet, memo)
@@ -36,6 +37,7 @@ class Solution_MEMO:
 
         return max_length
 
+
 class Solution_DFS:
     # Time limit was hit ---> not working
     def wordBreak(self, s, wordSet):
@@ -51,7 +53,7 @@ class Solution_DFS:
             if len(word) + start > len(s):
                 continue
             if s[start: start + len(word)] == word:
-                if self.dfs(s, start+ len(word), wordSet):
+                if self.dfs(s, start + len(word), wordSet):
                     return True
 
         return False
@@ -65,17 +67,45 @@ class Solution:
             return False
 
         n = len(s)
-        dp = [False] * (n+1)
+        dp = [False] * (n + 1)
         maxLen = max([len(w) for w in wordSet])
         dp[0] = True
 
-        for i in range(1, n+1):
+        for i in range(1, n + 1):
             for j in range(max(i - maxLen, 0), i):
                 if not dp[j]:
                     continue
                 if s[j: i] in wordSet:
                     dp[i] = True
                     break
+
+        return dp[-1]
+
+
+class Solution:
+    """
+	@param s: A string
+	@param wordSet: A dictionary of words dict
+	@return: A boolean
+	"""
+
+    def wordBreak(self, s, wordSet):
+        # write your code here
+        if not s:
+            return True
+
+        dp = [False] * (len(s) + 1)
+        dp[0] = True
+
+        maxLen = max([len(w) for w in wordSet])
+
+        for i in range(1, len(s) + 1):
+            for j in range(max(i - maxLen, 0), i):
+                if not dp[j]:
+                    continue
+                if s[j:i] not in wordSet:
+                    continue
+                dp[i] = True
 
         return dp[-1]
 
