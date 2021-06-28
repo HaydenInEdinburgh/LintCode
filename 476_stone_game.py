@@ -1,33 +1,28 @@
-import sys
-
-
 class Solution:
-    """
-    @param A: An integer array
-    @return: An integer
-    """
-    def stoneGame(self, A):
-        # write your code here
-        if not A:
-            return 0
-        n = len(A)
-        dp = [[0] * n for _ in range(n)]
-        range_sum = self.get_range_sum(A)
+    def stoneGame(self, piles) -> bool:
+        if not piles: return
 
-        for length in range(2, n+1):
-            for i in range(n - length +1):
-                j = i + length -1
-                dp[i][j] = sys.maxsize
-                for k in range(i, j):
-                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k+1][j] + range_sum[i][j])
+        self.dp = {}
+        N = len(piles)
+        self.choose_max_gap(piles, 0, N - 1)
+        print(self.dp)
+        return self.dp[(0, N-1)] > 0
 
-        return dp[0][n-1]
+    def choose_max_gap(self, piles, left, right):
+        if left == right:
+            #there's only one pile left
+            return piles[left]
 
-    def get_range_sum(self, A):
-        range_sum = [[0] * len(A) for _ in range(len(A))]
-        for i in range(len(A)):
-            range_sum[i][i] = A[i]
-            for j in range(i+1, len(A)):
-                range_sum[i][j] = range_sum[i][j-1] + A[j]
+        if (left, right) in self.dp:
+            return self.dp[(left, right)]
 
-        return range_sum
+        choose_left = piles[left] - self.choose_max_gap(piles, left +1, right)
+        choose_right = piles[right] - self.choose_max_gap(piles, left, right-1)
+        self.dp[(left, right)] = max(choose_left, choose_right)
+
+        return self.dp[(left, right)]
+
+if __name__ == '__main__':
+    s = Solution()
+    piles = [5, 3, 4, 5]
+    print(s.stoneGame(piles))
