@@ -24,8 +24,27 @@ class Solution:
 
         return str(cur_sum)
 
+class Solution_CharOnly:
+    def addStrings(self, num1, num2):
+        if not num1 and num2:
+            return ""
+
+        l, r = len(num1)-1, len(num2)-1
+        carry = 0
+        res = ""
+        while l>= 0 or r>= 0 or carry:
+            n_a = int(num1[l]) if l >=0 else 0
+            n_b = int(num2[r]) if r >=0 else 0
+            final = (n_a + n_b + carry) % 10
+            carry = (n_a + n_b + carry) // 10
+            res += str(final)
+            l -= 1
+            r -= 1
+
+        return res[::-1]
+
 if __name__ == '__main__':
-    s = Solution()
+    s = Solution_CharOnly()
     num1 = '123'
     num2 = '45'
     print(s.addStrings(num1, num2))
