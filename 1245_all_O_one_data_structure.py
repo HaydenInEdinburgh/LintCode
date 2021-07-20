@@ -3,7 +3,7 @@ class Node:
         self.next = None
         self.prev = None
         self.val = val
-        self.data = set()
+        self.data = []
 
 class AllOne:
     """
@@ -27,7 +27,8 @@ class AllOne:
             newNode.prev.next = newNode.next.prev = newNode
         else:#move the key to next node
             newNode = node.next
-        newNode.data.add(key)
+        newNode.data.append(key)
+        newNode.data.sort(reverse=True)
         return newNode
 
     def add_prev(self, node, key):
@@ -37,7 +38,8 @@ class AllOne:
             newNode.prev.next = newNode.next.prev = newNode
         else:
             newNode = node.prev
-        newNode.data.add(key)
+        newNode.data.append(key)
+        newNode.data.sort(reverse=True)
         return newNode
 
     def inc(self, key):
@@ -75,7 +77,7 @@ class AllOne:
         if not self.tail.prev.data:
             return ""
         num = self.tail.prev.data.pop()
-        self.tail.prev.data.add(num)
+        self.tail.prev.data.append(num)
         return num
     """
     @return: nothing
@@ -85,5 +87,13 @@ class AllOne:
         if not self.head.next.data:
             return ""
         num = self.head.next.data.pop()
-        self.head.next.data.add(num)
+        self.head.next.data.append(num)
         return num
+
+if __name__ == '__main__':
+    dic = collections.OrderedDict()
+    dic['b'] = 1
+    dic['a'] = 2
+    dic['c'] = 3
+    dic = sorted(dic.items())
+    print(dic)
