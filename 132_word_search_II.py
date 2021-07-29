@@ -1,5 +1,5 @@
 DIRECTION = [(1, 0), (-1, 0), (0, -1), (0, 1)]
-class Solution:
+class Solution_DFS:
     """
     @param board: A list of lists of character
     @param words: A list of string
@@ -48,8 +48,78 @@ class Solution:
     def isValid(self, board, x, y):
         return 0<= x< len(board) and 0<= y< len(board[0])
 
+
+class TrieNode:
+    def __init__(self, word = None):
+        self.word = word
+        self.child = {}
+        self.isword = False
+
+class Trie:
+    def __init__(self):
+        self.dummy = TrieNode()
+
+    def add_word(self, word):
+        node = self.dummy
+        for c in word:
+            if c not in node.child:
+                node.child[c] = TrieNode()
+            node = node.child[c]
+        node.isword = True
+        node.word = word
+
+    def find(self, word):
+        node = self.dummy
+        for c in word:
+            if c not in node.child:
+                return None
+            node = node.child[c]
+        return node
+
+class Solution_Trie:
+    """
+    @param board: A list of lists of character
+    @param words: A list of string
+    @return: A list of string
+    """
+    def wordSearchII(self, board, words):
+        # write your code here
+        trie = Trie()
+        for word in words:
+            trie.add_word(word)
+
+        results = set()
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                char = board[i][j]
+                self.search(trie.dummy.child.get(char), i, j, board, {(i, j)}, results)
+
+        return list(results)
+
+    def search(self, node, cur_x, cur_y, board, visited, results):
+        if not node:
+            return
+        if node.isword:
+            results.add(node.word)
+
+        for dx, dy in DIRECTION:
+            nx, ny = cur_x+dx, cur_y+dy
+            if not self.valid(board, nx, ny):
+                continue
+            if (nx, ny) in visited:
+                continue
+
+            visited.add((nx, ny))
+            self.search(node.child.get(board[nx][ny]), nx, ny, board, visited, results)
+            visited.remove((nx, ny))
+
+
+    def valid(self, board, x, y):
+        return 0 <= x < len(board) and 0 <= y < len(board[0])
+
+
 if __name__ == '__main__':
     board = ["b","a","b","b","a"]
     words = ["babbab","b","a","ba"]
     expected = ["a","b","ba"]
-    print(Solution().wordSearchII(board, words))
+    print(Solution_Trie().wordSearchII(board, words))
