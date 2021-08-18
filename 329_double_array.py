@@ -8,10 +8,10 @@ class Solution:
         # write your code here
         if not arr:
             return num
+        arr.sort()
 
-        res = num
         for n in arr:
-            if n == res:
-                res *= 2
+            if n == num:
+                num *= 2
 
-        return res
+        return num
