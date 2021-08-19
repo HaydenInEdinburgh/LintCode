@@ -1,8 +1,4 @@
 import collections
-
-DIRECTIONS = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-
-
 class Solution:
     """
     @param grid: Given a 2D grid, each cell is either 'W', 'E' or '0'
@@ -14,47 +10,59 @@ class Solution:
         m, n = len(grid), len(grid[0])
         if not m or not n:
             return 0
+        up = [[0] * n for _ in range(m)]
+        down = [[0] * n for _ in range(m)]
+        left = [[0] * n for _ in range(m)]
+        right = [[0] * n for _ in range(m)]
+
+        #up
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 'W':
+                    continue
+                if grid[i][j] == 'E':
+                    up[i][j] = 1
+                if i > 0:
+                    up[i][j] += up[i-1][j]
+
+        #down
+        for i in range(m-1, -1, -1):
+            for j in range(n):
+                if grid[i][j] == 'W':
+                    continue
+                if grid[i][j] == 'E':
+                    down[i][j] = 1
+                if i < m-1:
+                    down[i][j] += down[i+1][j]
+
+        #left
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 'W':
+                    continue
+                if grid[i][j] == 'E':
+                    left[i][j] = 1
+                if j >0:
+                    left[i][j] += left[i][j-1]
+
+        #right
+        for i in range(m):
+            for j in range(n-1, -1, -1):
+                if grid[i][j] == 'W':
+                    continue
+                if grid[i][j] == 'E':
+                    right[i][j] = 1
+                if j <n-1:
+                    right[i][j] += right[i][j+1]
+
         res = 0
         for i in range(m):
             for j in range(n):
-                node = grid[i][j]
-                if node != '0':
-                    continue
-                kills = self.explode(i, j, grid)
-                res = max(res, kills)
+                if grid[i][j] == '0':
+                    res = max(res, up[i][j] + down[i][j]+ left[i][j]+ right[i][j])
+
         return res
 
-    def explode(self, b_x, b_y, grid):
-        queue = collections.deque([(b_x, b_y, (0, 0))])
-        kills = 0
-        while queue:
-            x, y, direction = queue.popleft()
-            if direction == (0, 0):
-                for dx, dy in DIRECTIONS:
-                    nx, ny = x + dx, y + dy
-                    if not self.valid(nx, ny, grid):
-                        continue
-                    if grid[nx][ny] == 'W':
-                        continue
-                    if grid[nx][ny] == 'E':
-                        kills += 1
-                    queue.append((nx, ny, (dx, dy)))
-            else:
-                dx, dy = direction[0], direction[1]
-                nx, ny = x + dx, y + dy
-                if not self.valid(nx, ny, grid):
-                    continue
-                if grid[nx][ny] == 'W':
-                    continue
-                if grid[nx][ny] == 'E':
-                    kills += 1
-                queue.append((nx, ny, (dx, dy)))
-
-        return kills
-
-    def valid(self, x, y, grid):
-        m, n = len(grid), len(grid[0])
-        return 0 <= x < m and 0 <= y < n
 
 if __name__ == '__main__':
     s = Solution()
