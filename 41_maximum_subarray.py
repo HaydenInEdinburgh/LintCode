@@ -46,6 +46,6 @@ class Solution:
         return max_sum
 
 if __name__ == '__main__':
-    s = Solution()
+    s = Solution() 
     nums = [-2, 2, -3, 4, -1, 2, 1, -5, 3]
     print(s.maxSubArray(nums))
