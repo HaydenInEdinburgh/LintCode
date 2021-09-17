@@ -12,9 +12,9 @@ class Solution:
         if (i, j) in memo:
             return memo[(i, j)]
 
-        if len(source) == i:
-            return self.is_all_star(pattern, j)
-        if len(pattern) == j:
+        if len(source) == i: #source reach the end
+            return self.is_all_star(pattern, j) #if the left are all *
+        if len(pattern) == j:#pattern reach the end but source not
             return False
         if j+1 < len(pattern) and pattern[j+1] == '*':
             matched = (self.char_match(source[i], pattern[j]) and self.helper(source, i+1, pattern, j, memo)) or self.helper(source, i, pattern, j+2, memo)
