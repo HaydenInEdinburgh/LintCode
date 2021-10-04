@@ -3,7 +3,7 @@ class Solution:
     @param heights: a list of integers
     @return: a integer
     """
-
+    # 每个位置上的盛水数目 = min(左侧最高，右侧最高) - 当前高度
     def trapRainWater(self, heights):
         # write your code here
         # water_added = min(left highest, right highest) - height

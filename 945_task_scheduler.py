@@ -17,7 +17,7 @@ class Solution:
 
         counts = list(task_cnt.values())
         longest = max(counts)
-        res =(longest - 1) * (n + 1) + counts.count(longest)
+        res = (longest - 1) * (n + 1) + counts.count(longest)
         return max(res, len(tasks))
 
 if __name__ == '__main__':
